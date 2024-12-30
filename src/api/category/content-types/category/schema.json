@@ -28,6 +28,12 @@
       ],
       "type": "media",
       "multiple": false
+    },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product",
+      "mappedBy": "category"
     }
   }
 }

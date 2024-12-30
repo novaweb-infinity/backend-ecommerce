@@ -392,6 +392,7 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     mainImage: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    product: Schema.Attribute.Relation<'oneToOne', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'categoryName'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -436,10 +437,14 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       ['Earring', 'Sent', 'Delivered', 'Canceled']
     >;
     price: Schema.Attribute.Decimal;
+    productCategory: Schema.Attribute.Enumeration<
+      ['Hombre', 'Mujer', 'Ni\u00F1o', 'Accesorios']
+    >;
     productName: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'productName'>;
     stock: Schema.Attribute.Integer;
+    topVentas: Schema.Attribute.Boolean;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

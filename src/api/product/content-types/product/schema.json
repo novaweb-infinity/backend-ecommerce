@@ -62,9 +62,22 @@
     "category": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "api::category.category"
+      "target": "api::category.category",
+      "inversedBy": "product"
     },
     "isFeature": {
+      "type": "boolean"
+    },
+    "productCategory": {
+      "type": "enumeration",
+      "enum": [
+        "Hombre",
+        "Mujer",
+        "Niño",
+        "Accesorios"
+      ]
+    },
+    "topVentas": {
       "type": "boolean"
     }
   }
