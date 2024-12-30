@@ -59,12 +59,6 @@
         "Canceled"
       ]
     },
-    "category": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::category.category",
-      "inversedBy": "product"
-    },
     "isFeature": {
       "type": "boolean"
     },
@@ -79,6 +73,12 @@
     },
     "topVentas": {
       "type": "boolean"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "products"
     }
   }
 }
