@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -26,7 +26,12 @@
       "type": "media",
       "multiple": true,
       "required": false,
-      "allowedTypes": ["images", "files", "videos", "audios"]
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     },
     "active": {
       "type": "boolean"
@@ -39,18 +44,32 @@
     },
     "availability": {
       "type": "enumeration",
-      "enum": ["Available", "Exhausted", "On offer"]
+      "enum": [
+        "Available",
+        "Exhausted",
+        "On offer"
+      ]
     },
     "orderStatus": {
       "type": "enumeration",
-      "enum": ["Earring", "Sent", "Delivered", "Canceled"]
+      "enum": [
+        "Earring",
+        "Sent",
+        "Delivered",
+        "Canceled"
+      ]
     },
     "isFeature": {
       "type": "boolean"
     },
     "productCategory": {
       "type": "enumeration",
-      "enum": ["Hombre", "Mujer", "Niño", "Accesorios"]
+      "enum": [
+        "Hombre",
+        "Mujer",
+        "Niño",
+        "Accesorios"
+      ]
     },
     "topVentas": {
       "type": "boolean"
