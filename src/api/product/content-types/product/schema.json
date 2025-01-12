@@ -80,17 +80,11 @@
       "target": "api::category.category",
       "inversedBy": "products"
     },
-    "custom_users": {
+    "users": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::custom-user.custom-user",
-      "mappedBy": "purchasedProduct"
-    },
-    "products": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::custom-user.custom-user",
-      "mappedBy": "favorite"
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "favorites"
     }
   }
 }
