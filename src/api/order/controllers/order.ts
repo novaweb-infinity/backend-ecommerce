@@ -17,7 +17,7 @@ export default factories.createCoreController("api::order.order", ({ strapi }) =
             throw new Error(`ID de producto inválido: ${product.id}`)
           }
 
-          const item = await strapi.service("api::product.product").findOne(product.id)
+          const item = await strapi.db.query("api::product.product").findOne({ where: { id: productId } })
 
           if (!item) {
             throw new Error(`Producto con ID ${productId} no encontrado`)
