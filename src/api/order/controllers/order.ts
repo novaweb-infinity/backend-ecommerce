@@ -1,62 +1,70 @@
-// @ts-ignore
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
+import { factories } from "@strapi/strapi"
 
-/**
- * order controller
- */
+export default factories.createCoreController("api::order.order", ({ strapi }) => ({
+  async create(ctx) {
+    const { products } = ctx.request.body
 
-import { factories } from '@strapi/strapi'
+    if (!products || !Array.isArray(products)) {
+      return ctx.badRequest("Se requiere un array de productos válido")
+    }
 
-export default factories.createCoreController(
-  'api::order.order',
-  ({ strapi }) => ({
-    async create(ctx) {
-      // @ts-ignore
+    try {
+      const lineItems = await Promise.all(
+        products.map(async (product) => {
+          const productId = parseInt(product.id)
+          if (isNaN(productId)) {
+            throw new Error(`ID de producto inválido: ${product.id}`)
+          }
 
-      const { products } = ctx.request.body
-
-      try {
-        const line_items = await Promise.all(
-          products.map(async (product) => {
-            const item = await strapi
-              .service('api::product.product')
-              .findOne(product.id)
-
-            if (!item) {
-              return ctx.badRequest('Producto no encontrado')
-            }
-
-            return {
-              price_data: {
-                currency: 'eur',
-                product_data: {
-                  name: item.productName,
-                },
-                unit_amount: Math.round(item.price * 100),
-              },
-              quantity: 1,
-            }
+          const item = await strapi.entityService.findOne("api::product.product", productId, {
+            populate: "*",
           })
-        )
 
-        const session = await stripe.checkout.sessions.create({
-          shipping_address_collection: { allowed_countries: ['ES'] },
-          payment_method_types: ['card'],
-          mode: 'payment',
-          success_url: `${process.env.FRONTEND_URL}/success`,
-          cancel_url: `${process.env.FRONTEND_URL}/cancel`,
-          line_items: line_items,
+          if (!item) {
+            throw new Error(`Producto con ID ${productId} no encontrado`)
+          }
+
+          return {
+            price_data: {
+              currency: "eur",
+              product_data: {
+                name: item.productName,
+                description: item.description || undefined,
+              },
+              unit_amount: Math.round(item.price * 100),
+            },
+            quantity: product.quantity || 1,
+          }
         })
+      )
 
-        await strapi
-          .service('api::order.order')
-          .create({ data: { products, stripeId: session.id } })
+      const session = await stripe.checkout.sessions.create({
+        shipping_address_collection: { allowed_countries: ["ES"] },
+        payment_method_types: ["card"],
+        mode: "payment",
+        success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+        line_items: lineItems,
+      })
 
-        return { stripeSession: session }
-      } catch (error) {
-        ctx.response.status = 500
-        return { error }
+      const order = await strapi.service("api::order.order").create({
+        data: {
+          products,
+          stripeId: session.id,
+          status: "pending",
+          total: session.amount_total / 100,
+        },
+      })
+
+      return { stripeSession: session, order }
+    } catch (error) {
+      console.error("Error en la creación de la orden:", error)
+      ctx.response.status = 500
+      return {
+        error: true,
+        message: error.message || "Error al procesar la orden",
       }
-    },
-  })
-)
+    }
+  },
+}))
