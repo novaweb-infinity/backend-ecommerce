@@ -35,9 +35,9 @@ export default ({ env }) => {
         database: env('DATABASE_NAME', 'postgres'),
         user: env('DATABASE_USERNAME', 'postgres'),
         password: env('DATABASE_PASSWORD', 'TuContraseña'),
-        ssl: env.bool('DATABASE_SSL', false)
-          ? { rejectUnauthorized: false }
-          : false,
+        ssl: {
+          rejectUnauthorized: false, // Es necesario para conexiones con Supabase
+        },
         schema: env('DATABASE_SCHEMA', 'public'),
       },
       pool: {
