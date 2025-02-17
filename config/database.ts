@@ -1,7 +1,7 @@
-import path from "path"
+import path from 'path'
 
 export default ({ env }) => {
-  const client = env("DATABASE_CLIENT", "postgres")
+  const client = env('DATABASE_CLIENT', 'postgres')
 
   const connections = {
     mysql: {
@@ -35,7 +35,11 @@ export default ({ env }) => {
         database: env('DATABASE_NAME', 'postgres'),
         user: env('DATABASE_USERNAME', 'postgres'),
         password: env('DATABASE_PASSWORD', 'TuContraseña'),
-       ssl: env.bool("DATABASE_SSL", false) ? { rejectUnauthorized: false } : false,
+        ssl: env.bool('DATABASE_SSL', false)
+          ? { rejectUnauthorized: false }
+          : false,
+        schema: env('DATABASE_SCHEMA', 'public'),
+      },
       pool: {
         min: env.int('DATABASE_POOL_MIN', 2),
         max: env.int('DATABASE_POOL_MAX', 10),
@@ -58,7 +62,7 @@ export default ({ env }) => {
     connection: {
       client,
       ...connections[client],
-      acquireConnectionTimeout: env.int("DATABASE_CONNECTION_TIMEOUT", 60000),
+      acquireConnectionTimeout: env.int('DATABASE_CONNECTION_TIMEOUT', 60000),
     },
   }
 }
