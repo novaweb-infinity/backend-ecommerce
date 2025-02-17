@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  strapi:
+    build: .
+    container_name: strapi-backend
+    environment:
+      - DATABASE_CLIENT=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=c0nstInfinty
+      - DATABASE_SSL=true
+      - CLOUDINARY_NAME=dwsrlq6vq
+      - CLOUDINARY_KEY=214474931182264
+      - CLOUDINARY_SECRET=ZHfpmDFZSDhOk1hzfnFgsze_Ocg
+      - SUPABASE_URL=https://wmblmwgaoxuriklbiezz.supabase.co
+      - SUPABASE_PUBLIC_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtYmxtd2dhb3h1cmlrbGJpZXp6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ5OTcwODgsImV4cCI6MjA1MDU3MzA4OH0.hp_EUrrEX9SM6TJCSt1nDO9mVWsyQtaUKu0k2h7L8Gw
+    ports:
+      - '1337:1337'
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - strapi-network
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    container_name: strapi-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: c0nstInfinty
+      POSTGRES_DB: postgres
+    networks:
+      - strapi-network
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+volumes:
+  db_data:
+
+networks:
+  strapi-network:
+    driver: bridge
