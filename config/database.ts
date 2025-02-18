@@ -37,6 +37,7 @@ export default ({ env }) => {
         password: env('DATABASE_PASSWORD', 'TuContraseña'),
         ssl: {
           rejectUnauthorized: false, // Es necesario para conexiones con Supabase
+          require: true,
         },
         schema: env('DATABASE_SCHEMA', 'public'),
       },
