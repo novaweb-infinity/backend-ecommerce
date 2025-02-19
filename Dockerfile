@@ -1,20 +1,11 @@
-# Usar la imagen oficial de Node.js
-FROM node:16-alpine
+FROM node:18-alpine
 
-# Establecer el directorio de trabajo dentro del contenedor
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copiar el package.json y package-lock.json
 COPY package*.json ./
+RUN npm install --ignore-scripts=false --foreground-scripts --verbose sharp
 
-# Instalar las dependencias
-RUN npm install
-
-# Copiar el resto de los archivos del proyecto
 COPY . .
 
-# Exponer el puerto en el que Strapi correrá
 EXPOSE 1337
-
-# Comando para iniciar la aplicación
 CMD ["npm", "run", "develop"]
