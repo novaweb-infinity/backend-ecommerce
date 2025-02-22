@@ -1,11 +1,14 @@
-FROM node:18-alpine
+FROM node:18-slim
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --ignore-scripts=false --foreground-scripts --verbose sharp
+RUN npm install
 
 COPY . .
 
+RUN npm run build
+
 EXPOSE 1337
-CMD ["npm", "run", "develop"]
+
+CMD ["npm", "run", "start"]
