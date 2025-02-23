@@ -9,8 +9,22 @@ export default [
         useDefaults: true,
         directives: {
           "connect-src": ["'self'", "https:"],
-          "img-src": ["'self'", "data:", "blob:", "market-assets.strapi.io", "res.cloudinary.com"],
-          "media-src": ["'self'", "data:", "blob:", "market-assets.strapi.io", "res.cloudinary.com"],
+          "img-src": [
+            "'self'",
+            "data:",
+            "blob:",
+            "market-assets.strapi.io",
+            "res.cloudinary.com",
+            "http://ec2-3-72-39-16.eu-central-1.compute.amazonaws.com/",
+          ],
+          "media-src": [
+            "'self'",
+            "data:",
+            "blob:",
+            "market-assets.strapi.io",
+            "res.cloudinary.com",
+            "http://ec2-3-72-39-16.eu-central-1.compute.amazonaws.com/",
+          ],
           upgradeInsecureRequests: null,
         },
       },
@@ -24,4 +38,4 @@ export default [
   "strapi::session",
   "strapi::favicon",
   "strapi::public",
-]
+];
